@@ -42,6 +42,8 @@ function App() {
 
   const [filterType, setFilterType] = useState("");
 
+  const [searchItem, setSearchItem] = useState("");
+
   const handleChangeItem = (event) => {
     setItemToAdd(event.target.value);
   };
@@ -102,6 +104,10 @@ function App() {
     setFilterType(type);
   };
 
+  const handleSearchItems = (event) => {
+    setSearchItem(event.target.value);
+  }
+
   const amountDone = items.filter((item) => item.done).length;
 
   const amountLeft = items.length - amountDone;
@@ -112,6 +118,12 @@ function App() {
       : filterType === "active"
       ? items.filter((item) => !item.done)
       : items.filter((item) => item.done);
+
+
+  const searchResult =
+    !searchItem || searchItem === ""
+      ? filteredItems
+      : filteredItems.filter((item) => item.label === searchItem);
 
   return (
     <div className="todo-app">
@@ -129,6 +141,7 @@ function App() {
           type="text"
           className="form-control search-input"
           placeholder="type to search"
+          onChange={handleSearchItems}
         />
         {/* Item-status-filter */}
         <div className="btn-group">
@@ -149,8 +162,8 @@ function App() {
 
       {/* List-group */}
       <ul className="list-group todo-list">
-        {filteredItems.length > 0 &&
-          filteredItems.map((item) => (
+        {searchResult.length > 0 &&
+          searchResult.map((item) => (
             <li key={item.key} className="list-group-item">
               <span className={`todo-list-item${item.done ? " done" : ""}`}>
                 <span className ={`todo-list-item${item.important ? " important" : ""}`}>
