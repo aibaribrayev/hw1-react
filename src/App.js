@@ -51,7 +51,6 @@ function App() {
     // const oldItems = items;
     // oldItems.push({ label: itemToAdd, key: uuidv4() });
     // setItems(oldItems);
-
     // not mutating !CORRECT!
     setItems((prevItems) => [
       { label: itemToAdd, key: uuidv4() },
@@ -80,8 +79,20 @@ function App() {
     //second way updated
     setItems((prevItems) =>
       prevItems.map((item) => {
+        console.log(item.done);
         if (item.key === key) {
           return { ...item, done: !item.done };
+        } else return item;
+      })
+    );
+  };
+
+  const handleItemImportance = ({ key }) => {
+    setItems((prevItems) =>
+      prevItems.map((item) => {
+        console.log(item.important);
+        if (item.key === key) {
+          return { ...item, important: !item.important };
         } else return item;
       })
     );
@@ -142,16 +153,16 @@ function App() {
           filteredItems.map((item) => (
             <li key={item.key} className="list-group-item">
               <span className={`todo-list-item${item.done ? " done" : ""}`}>
-                <span
-                  className="todo-list-item-label"
-                  onClick={() => handleItemDone(item)}
-                >
-                  {item.label}
+                <span className ={`todo-list-item${item.important ? " important" : ""}`}>
+                  <span className="todo-list-item-label" onClick={() => handleItemDone(item)}>
+                    {item.label}
+                  </span>
                 </span>
 
                 <button
                   type="button"
                   className="btn btn-outline-success btn-sm float-right"
+                  onClick = {() => handleItemImportance(item)}
                 >
                   <i className="fa fa-exclamation" />
                 </button>
