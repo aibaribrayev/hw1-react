@@ -37,6 +37,7 @@ const toDoItems = [
 // useState crash => https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/
 function App() {
   const [itemToAdd, setItemToAdd] = useState("");
+
   //arrow declaration => expensive computation ex: API calls
   const [items, setItems] = useState(() => toDoItems);
 
@@ -60,6 +61,15 @@ function App() {
     ]);
 
     setItemToAdd("");
+  };
+
+  const handleItemDel = ({key}) => {
+    setItems((prevItems) =>{ 
+      let itemindex = prevItems.findIndex((element)=> element.key === key);
+      let left = prevItems.slice(0,itemindex); 
+      let right = prevItems.slice(itemindex + 1);
+      return [...left, ...right];
+    });
   };
 
   const handleItemDone = ({ key }) => {
@@ -183,6 +193,7 @@ function App() {
                 <button
                   type="button"
                   className="btn btn-outline-danger btn-sm float-right"
+                  onClick= {() => handleItemDel(item)}
                 >
                   <i className="fa fa-trash-o" />
                 </button>
